@@ -1,0 +1,206 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+enum ApprovalStatus {
+  APPROVED
+  PENDING
+  REJECTED
+}
+
+input CreateEventInput {
+  approval: ApprovalStatus! = PENDING
+  description: String!
+  email: String!
+  event_end_date: DateTime!
+  event_name: String!
+  event_start_date: DateTime!
+  event_type: String! = "active"
+  image: String!
+  location: String!
+  phone: String!
+  registration_fee: Float!
+  status: Boolean! = true
+  trending: Boolean!
+  user_id: Int!
+  user_type: String!
+}
+
+input CreateUserInput {
+  age: Int
+  email: String!
+  image: String
+  name: String!
+  password: String!
+  phone: String!
+  role: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Event {
+  approval: ApprovalStatus!
+  created_at: DateTime!
+  description: String!
+  email: String!
+  event_end_date: DateTime!
+  event_name: String!
+  event_start_date: DateTime!
+  event_type: String!
+  id: ID!
+  image: String!
+  location: String!
+  phone: String!
+  registeredUsers: [User!]!
+  registration_fee: Float!
+  status: Boolean!
+  trending: Boolean!
+  updated_at: DateTime!
+  userEvents: [UserEvent!]!
+  user_id: Int!
+  user_type: String!
+}
+
+input EventFilterInput {
+  approval: ApprovalStatus
+  event_type: String
+  status: Boolean
+  trending: Boolean
+  user_type: String
+}
+
+type LoginResponse {
+  access_token: String
+  message: String!
+  statusCode: Int!
+  user: User
+}
+
+type LogoutResponse {
+  message: String!
+  statusCode: Int!
+}
+
+type Mutation {
+  approveEvent(id: ID!): Event!
+  createEvent(input: CreateEventInput!): Event!
+  createUser(input: CreateUserInput!): User!
+  deleteEvent(id: ID!): Boolean!
+  deleteUser(id: ID!): Boolean!
+  login(email: String!, password: String!): LoginResponse!
+  logout: LogoutResponse!
+  registerUserToEvent(input: RegisterUserToEventInput!): UserEvent!
+  rejectEvent(id: ID!): Event!
+  unregisterFromEvent(eventId: ID!): Boolean!
+  unregisterUserFromEvent(eventId: ID!, userId: ID!): Boolean!
+  updateEvent(id: ID!, input: UpdateEventInput!): Event!
+  updateUser(id: ID!, input: UpdateUserInput!): User!
+}
+
+type PaginatedEvents {
+  events: [Event!]!
+  limit: Int!
+  page: Int!
+  total: Int!
+  totalPages: Int!
+}
+
+type PaginatedUsers {
+  limit: Int!
+  page: Int!
+  total: Int!
+  totalPages: Int!
+  users: [User!]!
+}
+
+input PaginationInput {
+  limit: Int! = 10
+  page: Int! = 1
+}
+
+type Query {
+  allEvents(filter: EventFilterInput, pagination: PaginationInput): PaginatedEvents!
+  event(id: ID!): Event
+  events(filter: EventFilterInput, pagination: PaginationInput): PaginatedEvents!
+  me: User!
+  myEventRegistrations(pagination: PaginationInput): [UserEvent!]!
+  trendingEvents(pagination: PaginationInput): PaginatedEvents!
+  user(id: ID!): User
+  userByEmail(email: String!): User
+  userEvent(id: ID!): UserEvent
+  userEvents(pagination: PaginationInput): [UserEvent!]!
+  userRegisteredEvents(pagination: PaginationInput, userId: ID!): PaginatedEvents!
+  users(filter: UserFilterInput, pagination: PaginationInput): PaginatedUsers!
+}
+
+input RegisterUserToEventInput {
+  event_id: Int!
+  user_id: Int!
+}
+
+type Session {
+  createdAt: DateTime!
+  expiresAt: DateTime!
+  id: ID!
+  ipAddress: String
+  updatedAt: DateTime!
+  user: User!
+  userAgent: String
+}
+
+input UpdateEventInput {
+  approval: ApprovalStatus
+  description: String
+  email: String
+  event_end_date: String
+  event_name: String
+  event_start_date: String
+  event_type: String
+  image: String
+  location: String
+  phone: String
+  registration_fee: Float
+  status: Boolean
+  trending: Boolean
+  user_type: String
+}
+
+input UpdateUserInput {
+  age: Int
+  email: String
+  image: String
+  name: String
+  phone: String
+  role: String
+}
+
+type User {
+  age: Int
+  created_at: DateTime!
+  email: String!
+  id: ID!
+  image: String
+  name: String!
+  phone: String!
+  registeredEvents: [Event!]!
+  role: String!
+  sessions: [Session!]!
+  updated_at: DateTime!
+  userEvents: [UserEvent!]!
+}
+
+type UserEvent {
+  created_at: DateTime!
+  event: Event!
+  id: ID!
+  registered_at: DateTime!
+  updated_at: DateTime!
+  user: User!
+}
+
+input UserFilterInput {
+  role: String
+}
