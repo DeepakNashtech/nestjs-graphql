@@ -60,6 +60,7 @@ import { GraphQLContext } from "./auth/interfaces/graphql-context.interface";
       entities: [User, Event, UserEvent, Session],
       synchronize: process.env.NODE_ENV !== "production", // Only for development
       logging: process.env.NODE_ENV === "development",
+      ssl: { rejectUnauthorized: false } ,
     }),
 
     // Feature Modules
