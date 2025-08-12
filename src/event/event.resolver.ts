@@ -160,7 +160,7 @@ export class EventResolver {
     @Args('pagination', { nullable: true }) pagination?: PaginationInput,
   ): Promise<PaginatedEvents> {
     // Users can only see their own registered events, admins can see all
-    if (currentUser.id !== userId && currentUser.role !== 'admin') {
+    if (currentUser.id !== Number(userId) && currentUser.role !== 'admin') {
       throw new ForbiddenException('You can only view your own registered events');
     }
 
